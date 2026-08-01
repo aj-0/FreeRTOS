@@ -1,4 +1,5 @@
 ## 🌐 STM32 W5500 Ethernet Web Server – LED Control
+<img width="1280" height="581" alt="image" src="https://github.com/user-attachments/assets/672f6b8c-63e7-47e7-8b51-ec8e1cbe03e7" />
 
 A lightweight embedded HTTP web server built using **STM32**, **W5500 Ethernet Controller**, and **FreeRTOS**. The project demonstrates how an STM32 can act as a standalone web server while running under the FreeRTOS scheduler, allowing users to control the onboard LED through any web browser on the local network.
 
