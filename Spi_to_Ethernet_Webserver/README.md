@@ -1,5 +1,6 @@
+## 🌐 **STM32 W5500 Ethernet Web Server – LED Control**
+
 <img width="1280" height="582" alt="image" src="https://github.com/user-attachments/assets/b9c057e7-c279-4032-8d0c-02628bced439" />
-## 🌐 STM32 W5500 Ethernet Web Server – LED Control
 
 A lightweight embedded HTTP web server built using **STM32** and the **W5500 Ethernet Controller**. The project demonstrates how an STM32 can act as a standalone web server that allows users to control an onboard LED through any web browser on the local network.
 
