@@ -136,5 +136,4 @@ Clicking the buttons controls the STM32 onboard LED over Ethernet.
 
 --
 <img width="1280" height="582" alt="image" src="https://github.com/user-attachments/assets/ccf89de5-fbd2-4bf3-9d3c-c9643bd13115" />
-
-
+<img width="1600" height="842" alt="image" src="https://github.com/user-attachments/assets/42536e3b-b265-4830-aa64-24c414ce7cd0" />
