@@ -1,28 +1,9 @@
 # 🚗 **CAN Bus FreeRTOS TX**
+<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/2a61da59-518c-48df-9102-0031a45e6081" />
 
 ## 📖 Short Description
 
 This project demonstrates **CAN Bus message transmission** using **FreeRTOS** on the **STM32F407 Discovery** board. A dedicated FreeRTOS task periodically transmits CAN frames through the CAN peripheral and **MCP2551 CAN Transceiver**, providing a basic real-time communication system commonly used in automotive embedded applications.
-
----
-
-# 🏗️ Architecture
-
-```text
-                  +----------------------+
-                  |  FreeRTOS Scheduler  |
-                  +----------+-----------+
-                             |
-                      CAN_TX_Task
-                             |
-                 HAL_CAN_AddTxMessage()
-                             |
-                      CAN1 Peripheral
-                             |
-                 MCP2551 CAN Transceiver
-                             |
-                        CAN Bus Network
-```
 
 ---
 
@@ -71,14 +52,6 @@ This project demonstrates **CAN Bus message transmission** using **FreeRTOS** on
 | PB8 | CAN_RX   |
 | PB9 | CAN_TX   |
 
-## 🚨 NVIC Configuration
-
-* CAN Interrupt (If Enabled)
-
-## 📦 Middleware
-
-* FreeRTOS
-
 ---
 
 # 🐞 Debugging & Problems Solved
@@ -116,23 +89,6 @@ Configured CAN filters correctly and completed the required CAN initialization s
 
 ---
 
-# 📚 Concepts Covered
-
-* ✅ Embedded C
-* ✅ ARM Cortex-M4
-* ✅ STM32 HAL
-* ✅ FreeRTOS
-* ✅ Task Creation
-* ✅ Task Scheduling
-* ✅ CAN Protocol
-* ✅ CAN Frame Transmission
-* ✅ MCP2551 CAN Transceiver
-* ✅ Embedded Debugging
-* ✅ Peripheral Initialization
-* ✅ Real-Time Systems
-
----
-
 # 📂 Project Structure
 
 ```text
@@ -153,3 +109,6 @@ CAN_Bus_FreeRTOS_TX/
 │
 └── README.md
 ```
+<img width="1280" height="720" alt="WhatsApp Image 2026-07-23 at 7 23 03 PM" src="https://github.com/user-attachments/assets/6c976d71-35bf-4eb3-9bae-3d69eff1a1d8" />
+<img width="1600" height="986" alt="image" src="https://github.com/user-attachments/assets/a49091ee-0854-4c44-bb57-4f6d6803bedc" />
+
