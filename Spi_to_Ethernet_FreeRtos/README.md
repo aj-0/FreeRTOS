@@ -1,155 +1,189 @@
-## 🌐 STM32 W5500 Ethernet Web Server – LED Control
-<img width="1280" height="581" alt="image" src="https://github.com/user-attachments/assets/672f6b8c-63e7-47e7-8b51-ec8e1cbe03e7" />
+# 🌐 STM32 W5500 Ethernet Web Server using FreeRTOS
 
-A lightweight embedded HTTP web server built using **STM32**, **W5500 Ethernet Controller**, and **FreeRTOS**. The project demonstrates how an STM32 can act as a standalone web server while running under the FreeRTOS scheduler, allowing users to control the onboard LED through any web browser on the local network.
+A lightweight **Embedded HTTP Web Server** built using the **STM32F407 Discovery Board**, **W5500 Ethernet Controller**, and **FreeRTOS**. The project demonstrates a multitasking embedded application where an STM32 hosts a web server that allows users to control the onboard LED from any web browser over a local Ethernet network.
 
 ---
 
-## 🛠 Hardware & tools Used
+## 📸 Demo
+
+<p align="center">
+<img width="900" src="https://github.com/user-attachments/assets/b9c057e7-c279-4032-8d0c-02628bced439">
+</p>
+
+<p align="center">
+<img width="900" src="https://github.com/user-attachments/assets/ccf89de5-fbd2-4bf3-9d3c-c9643bd13115">
+</p>
+
+
+# 🛠 Hardware & Tools
+
+## Hardware
 
 * STM32F407 Discovery Board
 * W5500 Ethernet Module
 * Ethernet Cable
+* Router / Switch
 * ST-Link Debugger
-* Wireshark
-* Hercules
+
+## Software
+
 * STM32CubeIDE
 * STM32CubeMX
 * FreeRTOS
 * WIZnet ioLibrary
+* Wireshark
+* Hercules
 
 ---
 
-## 📡 Network Configuration
+# 📡 Network Configuration
 
 | Parameter   | Value         |
 | ----------- | ------------- |
 | IP Address  | 192.168.5.50  |
 | Gateway     | 192.168.5.1   |
 | Subnet Mask | 255.255.255.0 |
-| Port        | 80 (HTTP)     |
+| HTTP Port   | 80            |
 
 ---
 
-## 🌐 Web Interface
+# 🧵 FreeRTOS Task Architecture
 
-The browser displays a simple control panel containing:
-
-* LED ON Button
-* LED OFF Button
-
-Clicking either button sends an HTTP GET request to the STM32 web server, where the corresponding FreeRTOS task processes the request and updates the onboard LED.
+| Task             | Responsibility                                       |
+| ---------------- | ---------------------------------------------------- |
+| Network Task     | Initializes W5500 and Ethernet stack                 |
+| HTTP Server Task | Accepts client connections and handles HTTP requests |
+| LED Control Task | Controls onboard LED based on received commands      |
 
 ---
 
-## 📂 Project Structure
+# 🌐 Web Interface
+
+The browser provides a simple dashboard containing:
+
+* 🟢 LED ON Button
+* 🔴 LED OFF Button
+
+When a button is pressed, the browser sends an HTTP GET request to the STM32 web server.
+
+```
+GET /ledon
+GET /ledoff
+```
+
+The HTTP Server Task parses the request and updates the LED state.
+
+---
+
+# 📂 Project Structure
 
 ```text
 Core/
- ├── Src/
- │    ├── main.c
- │    ├── freertos.c
- │    └── stm32f4xx_hal_msp.c
- │
- ├── Inc/
- │    ├── main.h
- │
+├── Inc/
+│   └── main.h
+│
+├── Src/
+│   ├── main.c
+│   ├── freertos.c
+│   └── stm32f4xx_hal_msp.c
+│
+Middlewares/
+└── FreeRTOS/
+    ├── Source/
+    └── CMSIS_RTOS/
+│
+Drivers/
+├── STM32 HAL Drivers
+└── CMSIS
+│
 W5500/
- ├── wizchip_conf.c
- ├── socket.c
- ├── w5500.c
- ├── wizchip_conf.h
- ├── socket.h
- └── w5500.h
+├── socket.c
+├── socket.h
+├── wizchip_conf.c
+├── wizchip_conf.h
+├── w5500.c
+└── w5500.h
 ```
 
 ---
 
-## 🔄 Program Flow
+# 🔄 Application Flow
 
 ```text
-STM32 Boot
+System Reset
       │
       ▼
-Initialize HAL
+HAL Initialization
       │
       ▼
-Initialize GPIO & SPI
+SPI Initialization
+      │
+      ▼
+GPIO Initialization
+      │
+      ▼
+FreeRTOS Kernel Initialization
+      │
+      ▼
+Create Tasks
+      │
+      ▼
+Start Scheduler
+      │
+      ▼
+──────────────────────────────────────
+Network Task
       │
       ▼
 Initialize W5500
       │
       ▼
-Configure Network
-      │
-      ▼
-Create FreeRTOS Tasks
-      │
-      ▼
-Start FreeRTOS Scheduler
-      │
-      ▼
-HTTP Server Task
+Configure Static IP
       │
       ▼
 Open TCP Socket (Port 80)
       │
       ▼
 Listen for Client
+──────────────────────────────────────
+      │
+      ▼
+HTTP Server Task
       │
       ▼
 Receive HTTP Request
       │
       ▼
-Parse URL
+Parse GET Request
       │
       ├────────► /ledon
-      │              │
-      │              ▼
-      │          LED ON
+      │             │
+      │             ▼
+      │      Notify LED Task
       │
       └────────► /ledoff
-                     │
-                     ▼
-                  LED OFF
+                    │
+                    ▼
+             Notify LED Task
       │
       ▼
 Send HTML Response
       │
       ▼
-Wait for Next Client
+Close Connection
+──────────────────────────────────────
+      │
+      ▼
+LED Task
+      │
+      ▼
+GPIO ON / GPIO OFF
 ```
 
 ---
 
-## 📸 Expected Output
 
-Open your browser and navigate to:
 
-```text
-http://192.168.5.50
-```
 
-A web page appears with:
 
-* LED ON
-* LED OFF
-
-Clicking the buttons controls the STM32 onboard LED over Ethernet.
-
----
-
-## 📚 Concepts Covered
-
-* FreeRTOS Task Scheduling
-* Embedded TCP Server
-* HTTP Protocol
-* ICMP Protocol
-* DHCP Protocol
-* Ethernet Communication
-* W5500 Socket API
-* SPI Communication
-* Static IP Configuration
-* Embedded Web Server Development
-* HTTP GET Request Parsing
-* GPIO Control
+Focused on Embedded Software • FreeRTOS • Embedded Linux • Automotive Software • Networking
