@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -28,9 +29,6 @@
 #include "stdio.h"
 #include "socket.h"
 #include <string.h>
-
-
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,13 +52,14 @@ SPI_HandleTypeDef hspi2;
 /* Definitions for defaultTask */
 
 /* USER CODE BEGIN PV */
-TaskHandle_t T1,T2;
+TaskHandle_t T = NULL;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI2_Init(void);
+void StartDefaultTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -113,14 +112,50 @@ static void W5500_Reset(void) {
 	HAL_Delay(5);
 }
 
-int __io_putchar(int ch) {
-	ITM_SendChar(ch); return ch; }
+int __io_putchar(int ch) { ITM_SendChar(ch); return ch; }
 
-void w5500_init(void *argument)
+void ethertx(void *argument){
+	uint8_t rxBuf[512]
 
-{
-	while(1){
-	uint8_t tx_size[8] = { 2, 2, 2, 2, 2, 2, 2, 2 };
+
+	while(1)
+	{
+		switch(getSn_SR(0)) //// give connect in hercules then only entr the condiion ,whie debugging
+
+			    {
+			        case SOCK_ESTABLISHED:
+			        {
+			            static uint8_t sent = 0;
+
+			            if(sent < 3)
+			            {
+			                char msg[] = "AJ\n\tData Arrived!!!\n";
+
+			                send(0, (uint8_t *)msg, strlen(msg));
+
+			                printf("AJ Sent\r\n");
+			                sent ++;
+			            }
+
+			            break;
+			        }
+
+			        case SOCK_CLOSE_WAIT:
+			            disconnect(0);
+			            break;
+
+			        case SOCK_CLOSED:
+			            socket(0, Sn_MR_TCP, 5000, 0);
+			            listen(0);
+			            break;
+			    }
+
+       }
+}
+
+void Ether_init(void *argument){
+	while(1)
+	{	uint8_t tx_size[8] = { 2, 2, 2, 2, 2, 2, 2, 2 };
 		uint8_t rx_size[8] = { 2, 2, 2, 2, 2, 2, 2, 2 };
 
 		wiz_NetInfo net_info =
@@ -132,6 +167,7 @@ void w5500_init(void *argument)
 		    .dns  = {8,8,8,8},
 		    .dhcp = NETINFO_STATIC
 		};
+	//
 		W5500_Reset();
 
 		reg_wizchip_cs_cbfunc(W5500_Select, W5500_Unselect);
@@ -175,54 +211,11 @@ void w5500_init(void *argument)
 
 
 		printf("PHY = %d\r\n", link_state);
-		socket(0, Sn_MR_TCP, 5000, 0);
+		socket(0, Sn_MR_TCP, 80, 0);
 		listen(0);
 
 		printf("TCP Server Started\r\n");
-vTaskDelete(T1);
-	}
-}
-
-void ethertx( void *argument){
-	while(1)
-	{
-		switch(getSn_SR(0)) //// give connect in hercules then only entr the condiion
-
-			    {
-			        case SOCK_ESTABLISHED:
-			        {
-			            static uint8_t sent = 0;
-
-			            if(sent < 3)
-			            {
-			                char msg[] = "AJ\n\tData Arrived!!!\n";
-
-			                send(0, (uint8_t *)msg, strlen(msg));
-
-			                printf("AJ Sent\r\n");
-			                sent ++;
-			            }
-
-			            break;
-			        }
-
-			        case SOCK_CLOSE_WAIT:
-			            disconnect(0);
-			            break;
-
-			        case SOCK_CLOSED:
-			            socket(0, Sn_MR_TCP, 5000, 0);
-			            listen(0);
-			            break;
-			    }
-
-       }
-}
-
-void ld(void *argument){
-	while(1){
-		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
-		vTaskDelay(600);
+vTaskDelete(T);
 	}
 }
 /* USER CODE END 0 */
@@ -241,7 +234,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-   HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -262,17 +255,11 @@ int main(void)
 
   if (HAL_SPI_GetState(&hspi2) != HAL_SPI_STATE_READY)
   {
-printf("fault\n");
-  }
+printf("fault\n");  }
 
-
-
-	xTaskCreate(w5500_init, "w5500_init", 100, NULL, 8, &T1);
-	xTaskCreate(ethertx, "ethertx", 100, NULL, 7, &T2);
-	xTaskCreate(ld, "ld", 100, NULL, 5, NULL);
-
-	vTaskStartScheduler();
-
+xTaskCreate(Ether_init, "Ether_init", 100, NULL, 8, &T);
+xTaskCreate(ethertx, "ethertx", 100, NULL, 7, NULL);
+vTaskStartScheduler();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -425,7 +412,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, RST_Pin|CS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : RST_Pin CS_Pin */
   GPIO_InitStruct.Pin = RST_Pin|CS_Pin;
@@ -434,8 +421,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PD13 */
-  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  /*Configure GPIO pin : PD14 */
+  GPIO_InitStruct.Pin = GPIO_PIN_14;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
