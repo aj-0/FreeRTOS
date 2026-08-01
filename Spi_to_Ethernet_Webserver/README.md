@@ -5,13 +5,14 @@ A lightweight embedded HTTP web server built using **STM32** and the **W5500 Eth
 
 ---
 
-## 🛠 Hardware Used
+## 🛠 Hardware & tools Used
 
 * STM32F407 Discovery Board
 * W5500 Ethernet Module
 * Ethernet Cable
-* Router / Switch
 * ST-Link Debugger
+* Wireshark
+* Hercules
 
 ---
 
@@ -134,12 +135,6 @@ Clicking the buttons controls the STM32 onboard LED over Ethernet.
 * Embedded Web Server Development
 
 --
+<img width="1280" height="582" alt="image" src="https://github.com/user-attachments/assets/ccf89de5-fbd2-4bf3-9d3c-c9643bd13115" />
 
-## 👨‍💻 Author
-
-**AJ**
-
-Electronics and Communication Engineering
-
-Focused on Embedded Systems, Embedded Software, RTOS, Automotive Software, and Embedded Linux.
 
