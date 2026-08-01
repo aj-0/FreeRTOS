@@ -26,27 +26,6 @@ A lightweight **Embedded HTTP Web Server** built using the **STM32F407 Discovery
 
 ---
 
-# 📡 Network Configuration
-
-| Parameter   | Value         |
-| ----------- | ------------- |
-| IP Address  | 192.168.5.50  |
-| Gateway     | 192.168.5.1   |
-| Subnet Mask | 255.255.255.0 |
-| HTTP Port   | 80            |
-
----
-
-# 🧵 FreeRTOS Task Architecture
-
-| Task             | Responsibility                                       |
-| ---------------- | ---------------------------------------------------- |
-| Network Task     | Initializes W5500 and Ethernet stack                 |
-| HTTP Server Task | Accepts client connections and handles HTTP requests |
-| LED Control Task | Controls onboard LED based on received commands      |
-
----
-
 # 🌐 Web Interface
 
 The browser provides a simple dashboard containing:
@@ -95,79 +74,7 @@ W5500/
 └── w5500.h
 ```
 
----
 
-# 🔄 Application Flow
-
-```text
-System Reset
-      │
-      ▼
-HAL Initialization
-      │
-      ▼
-SPI Initialization
-      │
-      ▼
-GPIO Initialization
-      │
-      ▼
-FreeRTOS Kernel Initialization
-      │
-      ▼
-Create Tasks
-      │
-      ▼
-Start Scheduler
-      │
-      ▼
-──────────────────────────────────────
-Network Task
-      │
-      ▼
-Initialize W5500
-      │
-      ▼
-Configure Static IP
-      │
-      ▼
-Open TCP Socket (Port 80)
-      │
-      ▼
-Listen for Client
-──────────────────────────────────────
-      │
-      ▼
-HTTP Server Task
-      │
-      ▼
-Receive HTTP Request
-      │
-      ▼
-Parse GET Request
-      │
-      ├────────► /ledon
-      │             │
-      │             ▼
-      │      Notify LED Task
-      │
-      └────────► /ledoff
-                    │
-                    ▼
-             Notify LED Task
-      │
-      ▼
-Send HTML Response
-      │
-      ▼
-Close Connection
-──────────────────────────────────────
-      │
-      ▼
-LED Task
-      │
-      ▼
-GPIO ON / GPIO OFF
 ```
 
 ---
