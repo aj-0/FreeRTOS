@@ -177,6 +177,3 @@ GPIO ON / GPIO OFF
 <img width="900" src="https://github.com/user-attachments/assets/ccf89de5-fbd2-4bf3-9d3c-c9643bd13115">
 </p>
 
-
-
-Focused on Embedded Software • FreeRTOS • Embedded Linux • Automotive Software • Networking
