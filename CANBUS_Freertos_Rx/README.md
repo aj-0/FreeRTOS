@@ -1,4 +1,5 @@
 # 🚘 STM32-to-STM32 CAN Communication Using MCP2551
+<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/8f5e0784-5b7c-4524-8a44-8db4991aa255" />
 
 Implemented CAN 2.0 communication between two **STM32F407 Discovery** boards using **MCP2551 CAN transceivers**. This project demonstrates real CAN bus communication, including CAN peripheral configuration, frame transmission and reception, acceptance filter configuration, and physical-layer communication over the CAN bus.
 
