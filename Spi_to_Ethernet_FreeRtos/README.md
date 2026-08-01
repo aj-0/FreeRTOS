@@ -171,6 +171,8 @@ GPIO ON / GPIO OFF
 ```
 
 ---
+![Uploading image.png…]()
+
 <img width="1600" height="610" alt="image" src="https://github.com/user-attachments/assets/6066d9a4-993b-4ea1-86cb-ef958f5da581" />
 <img width="1600" height="526" alt="image" src="https://github.com/user-attachments/assets/21cee1ee-d3ad-4339-bfcf-e674a20f6add" />
 
