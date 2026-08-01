@@ -1,19 +1,10 @@
-# 🌐 STM32 W5500 Ethernet Web Server using FreeRTOS
-
-A lightweight **Embedded HTTP Web Server** built using the **STM32F407 Discovery Board**, **W5500 Ethernet Controller**, and **FreeRTOS**. The project demonstrates a multitasking embedded application where an STM32 hosts a web server that allows users to control the onboard LED from any web browser over a local Ethernet network.
-
----
-
-## 📸 Demo
-
+## 🌐 STM32 W5500 Ethernet Web Server using FreeRTOS
 <p align="center">
 <img width="900" src="https://github.com/user-attachments/assets/b9c057e7-c279-4032-8d0c-02628bced439">
 </p>
+A lightweight **Embedded HTTP Web Server** built using the **STM32F407 Discovery Board**, **W5500 Ethernet Controller**, and **FreeRTOS**. The project demonstrates a multitasking embedded application where an STM32 hosts a web server that allows users to control the onboard LED from any web browser over a local Ethernet network.
 
-<p align="center">
-<img width="900" src="https://github.com/user-attachments/assets/ccf89de5-fbd2-4bf3-9d3c-c9643bd13115">
-</p>
-
+---
 
 # 🛠 Hardware & Tools
 
@@ -182,7 +173,9 @@ GPIO ON / GPIO OFF
 
 ---
 
-
+<p align="center">
+<img width="900" src="https://github.com/user-attachments/assets/ccf89de5-fbd2-4bf3-9d3c-c9643bd13115">
+</p>
 
 
 
