@@ -49,8 +49,8 @@ This project demonstrates **CAN Bus message transmission** using **FreeRTOS** on
 
 | Pin | Function |
 | --- | -------- |
-| PB8 | CAN_RX   |
-| PB9 | CAN_TX   |
+| PD0 | CAN_RX   |
+| PD1 | CAN_TX   |
 
 ---
 
